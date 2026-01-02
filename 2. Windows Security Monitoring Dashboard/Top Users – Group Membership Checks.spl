@@ -1,0 +1,5 @@
+index=main sourcetype=WinEventLog:Security EventCode=4798
+| where NOT like(Account_Name, "%$")         # remove machine/system accounts
+| stats count by Account_Name                # count occurrences per user
+| sort -count                                # sort descending
+| head 5                                     # show top 5 users
