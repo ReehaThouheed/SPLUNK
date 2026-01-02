@@ -1,124 +1,115 @@
 # 🔐 Windows Security Monitoring Dashboard (Splunk)
 
 ## 📌 Project Overview
-This project focuses on building a **Windows Security Monitoring Dashboard** using **Splunk Enterprise** to gain real-time visibility into **Windows Security Event Logs**. The dashboard helps monitor authentication activities, identify suspicious login behavior, and analyze user-related security events in a SOC-style environment.
-
-The dashboard visualizes critical security metrics such as login attempts, failed access patterns, and user activity trends to support proactive security monitoring.
+This project involves building a Windows Security Monitoring Dashboard using Splunk Enterprise to analyze Windows Security Event Logs and provide real-time visibility into authentication activities. The dashboard helps identify login trends, failed access attempts, and user-related security events using a SOC-style monitoring approach.
 
 ---
 
-## 🎯 Objectives
+## 🎯 Project Objectives
 - Monitor Windows authentication activities in real time
-- Detect failed login attempts and abnormal access behavior
-- Analyze login trends and user involvement
-- Strengthen hands-on skills in SPL and dashboard design
+- Identify failed login attempts and suspicious behavior
+- Analyze login patterns and user activity
+- Gain hands-on experience with SPL and Splunk dashboards
 
 ---
 
-## 🔍 Key Features
-- **Total Login Attempts** (Successful + Failed)
-- **Successful vs Failed Login Comparison**
-- **Login Activity Over Time**
-- **Top Users Involved in Local Group Membership Checks**
-
----
-
-## 📊 Dashboard Visualizations & SPL Queries
+## 🔍 Dashboard Features & Visualizations
 
 ### 1️⃣ Total Login Attempts
-**Description:** Displays the total number of login attempts recorded in Windows Security Logs.
+**Description:**  
+Displays the total number of login attempts, including both successful and failed logins.
 
-**SPL Query:**
 ```spl
 index=main sourcetype=WinEventLog:Security (EventCode=4624 OR EventCode=4625)
 | stats count as "Total Login Attempts"
-Visualization Type:
-📌 Single Value
+```
 
-2️⃣ Successful vs Failed Logins
-Description: Compares successful and failed login attempts to quickly assess authentication health.
+**Visualization Type:**  
+Single Value
 
-SPL Query:
+---
 
-spl
-Copy code
+### 2️⃣ Successful vs Failed Logins
+**Description:**  
+Compares successful and failed login attempts to quickly assess authentication health.
+
+```spl
 index=main sourcetype=WinEventLog:Security
 | eval Login_Status=case(EventCode=4624,"Successful", EventCode=4625,"Failed")
 | stats count by Login_Status
-Visualization Type:
-📌 Pie Chart or Bar Chart
+```
 
-3️⃣ Login Activity Over Time
-Description: Shows login trends over time to identify spikes or suspicious patterns.
+**Visualization Type:**  
+Pie Chart or Bar Chart
 
-SPL Query:
+---
 
-spl
-Copy code
+### 3️⃣ Login Activity Over Time
+**Description:**  
+Shows login trends over time to identify spikes or suspicious patterns.
+
+```spl
 index=main sourcetype=WinEventLog:Security (EventCode=4624 OR EventCode=4625)
 | timechart count
-Visualization Type:
-📌 Line Chart
+```
 
-4️⃣ Top Users – Local Group Membership Checks
-Description: Identifies users frequently involved in local group membership-related activities.
+**Visualization Type:**  
+Line Chart
 
-SPL Query:
+---
 
-spl
-Copy code
+### 4️⃣ Top Users – Local Group Membership Checks
+**Description:**  
+Identifies users frequently involved in local group membership-related activities.
+
+```spl
 index=main sourcetype=WinEventLog:Security EventCode=4798
 | stats count by Account_Name
 | sort - count
 | head 5
-Visualization Type:
-📌 Table or Bar Chart
+```
 
-🛠️ Tools & Technologies
-Splunk Enterprise
+**Visualization Type:**  
+Table or Bar Chart
 
-Splunk Dashboard Studio
+---
 
-Search Processing Language (SPL)
+## 🛠️ Tools & Technologies
+- Splunk Enterprise
+- Splunk Dashboard Studio
+- Search Processing Language (SPL)
+- Windows Security Event Logs
+- SOC Monitoring Concepts
 
-Windows Security Event Logs
+---
 
-SOC Monitoring Concepts
+## 💾 How to Create & Save the Dashboard (Dashboard Studio)
+1. Go to Splunk → Dashboards
+2. Click Create New Dashboard
+3. Choose Dashboard Studio
+4. Select Grid Layout
+5. Add panels and paste SPL queries
+6. Choose visualization types (Single Value, Pie, Line, Table)
+7. Customize titles, colors, and labels
+8. Click Save Dashboard
+9. Set permissions (Private / Shared / App-level)
 
-💾 How to Save Dashboard & Visualizations (Dashboard Studio)
-Go to Splunk → Dashboards
+---
 
-Click Create New Dashboard
+## 📈 Learning Outcomes
+- Hands-on experience with Windows Security Logs
+- Understanding of authentication-related event codes
+- Practical exposure to SPL queries and visual analytics
+- SOC-style monitoring and threat detection experience
 
-Choose Dashboard Studio
+---
 
-Select Grid Layout (recommended for beginners)
+## 🚀 Future Enhancements
+- Configure alerts for multiple failed login attempts
+- Add geo-location-based login analysis
+- Implement brute-force attack detection logic
 
-Add a panel and paste the SPL query
+---
 
-Choose visualization type (Single Value, Pie, Line, Table)
-
-Customize titles, colors, and labels
-
-Click Save Dashboard
-
-Set permissions (Private / Shared / App-level)
-
-📈 Learning Outcomes
-Hands-on experience with Windows Security Logs
-
-Improved understanding of authentication-related event codes
-
-Practical exposure to SPL queries and visual analytics
-
-SOC-style approach to monitoring and threat detection
-
-🚀 Future Enhancements
-Configure alerts for multiple failed login attempts
-
-Add geo-location-based login analysis
-
-Integrate brute-force attack detection logic
-
-📌 Conclusion
-This project demonstrates the effective use of Splunk for real-time security monitoring by transforming raw Windows event data into actionable insights. It reflects a practical SOC use case and strengthens foundational skills required for cybersecurity and SIEM roles.
+## 📌 Conclusion
+This project demonstrates how Splunk can be used as a SIEM tool to transform raw Windows Security Event Logs into actionable insights through dashboards and SPL queries.
