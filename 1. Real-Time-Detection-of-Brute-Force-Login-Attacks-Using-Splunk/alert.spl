@@ -1,0 +1,4 @@
+index=main sourcetype=WinEventLog:Security EventCode=4625
+| bin _time span=5m
+| stats count as failed_attempts by Account_Name, _time
+| where failed_attempts >= 3
