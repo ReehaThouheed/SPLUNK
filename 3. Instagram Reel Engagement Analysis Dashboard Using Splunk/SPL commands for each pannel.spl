@@ -1,0 +1,69 @@
+Total Views
+------------------------------------------------------------------------------------------
+
+index="main" source="instagram_reel_simulated_logs.csv" sourcetype="csv" event_type="View"
+| stats count AS "Total Views"
+
+------------------------------------------------------------------------------------------
+Viewer Type Distribution (Followers vs Non-Followers)
+------------------------------------------------------------------------------------------
+
+index=main sourcetype=csv extracted_source=Reels
+| eval viewer_type = if('Type of viewer'="Follower","Followers","Non-Followers")
+| stats count BY viewer_type
+
+------------------------------------------------------------------------------------------
+Nation of Audience
+------------------------------------------------------------------------------------------
+
+index=main sourcetype=csv extracted_source=Reels
+| stats count AS viewers BY country
+| sort - viewers
+
+------------------------------------------------------------------------------------------
+Geo-Location of Audience
+------------------------------------------------------------------------------------------
+
+index=main sourcetype=csv extracted_source=Reels
+| stats count AS viewers BY country
+| geom geo_countries featureIdField=country
+
+------------------------------------------------------------------------------------------
+Age Group of Audience
+------------------------------------------------------------------------------------------
+
+index=main sourcetype=csv extracted_source=Reels
+| stats count AS "Number of Views" BY age_group
+| sort - "Number of Views"
+
+------------------------------------------------------------------------------------------
+Gender Distribution of Audience
+------------------------------------------------------------------------------------------
+
+index=main sourcetype=csv extracted_source=Reels
+| eval Gender = if(gender="M","Male","Female")
+| stats count BY Gender
+
+------------------------------------------------------------------------------------------
+Event Type Analysis (Likes, Shares, Saves, Views)
+------------------------------------------------------------------------------------------
+
+index=main sourcetype=csv extracted_source=Reels
+| stats count AS "Event Count" BY event_type
+
+------------------------------------------------------------------------------------------
+Source of Views
+------------------------------------------------------------------------------------------
+
+source="Insta_analysis.csv"
+| stats count AS view_count BY extracted_source
+| sort - view_count
+
+------------------------------------------------------------------------------------------
+Likes by Gender and Viewer Type
+------------------------------------------------------------------------------------------
+
+index=main sourcetype=csv extracted_source=Reels event_type="like"
+| eval Gender = if(gender="M","Male","Female")
+| eval viewer_type = if('Type of viewer'="Follower","Followers","Non-Followers")
+| stats count AS likes BY Gender viewer_type
